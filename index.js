@@ -11,12 +11,26 @@ app.use(express.json())
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = `mongodb+srv://${process.env.car_name}:${process.env.pass}@cluster0.6kfue.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-client.connect(err => {
-    const collection = client.db("test").collection("devices");
-    console.log('db connected')
-    // perform actions on the collection object
-    client.close();
-});
+
+
+async function run() {
+    await client.connect();
+    const usersDataCollection = client.db('car').collection('carData');
+    try {
+
+        app.get('/data', async (req, res) => {
+            const query = {};
+            const cursor = usersDataCollection.find(query);
+            const users = await cursor.toArray();
+            res.send(users)
+        })
+
+    } finally {
+
+    }
+
+}
+run().catch(console.dir);
 
 
 
