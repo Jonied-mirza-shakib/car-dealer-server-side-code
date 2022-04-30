@@ -32,6 +32,14 @@ async function run() {
             const result = await usersDataCollection.findOne(query);
             res.send(result);
         })
+
+        app.post('/data', async (req, res) => {
+            const newUser = req.body;
+            console.log('adding new user', newUser);
+            const result = await usersDataCollection.insertOne(newUser);
+            res.send(result)
+        })
+
     } finally {
 
     }
