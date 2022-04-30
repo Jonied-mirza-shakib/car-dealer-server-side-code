@@ -33,11 +33,29 @@ async function run() {
             res.send(result);
         })
 
+        // post method 
+
         app.post('/data', async (req, res) => {
             const newUser = req.body;
             console.log('adding new user', newUser);
             const result = await usersDataCollection.insertOne(newUser);
             res.send(result)
+        })
+
+        // put method 
+        app.put('/user/:id', async (req, res) => {
+            const id = req.params.id;
+            const updateUser = req.body;
+            const filter = { _id: isObjectId(id) };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    name: updateUser.name,
+                    email: updateUser.email,
+                },
+            };
+            const result = await userCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
         })
 
     } finally {
