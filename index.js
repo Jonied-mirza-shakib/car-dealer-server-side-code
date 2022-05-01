@@ -62,6 +62,14 @@ async function run() {
             res.send(result);
         })
 
+        // delete method 
+        app.delete('/data/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await usersDataCollection.deleteOne(query);
+            res.send(result)
+        })
+
     } finally {
 
     }
