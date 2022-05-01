@@ -43,18 +43,22 @@ async function run() {
         })
 
         // put method 
-        app.put('/user/:id', async (req, res) => {
+        app.put('/data/:id', async (req, res) => {
             const id = req.params.id;
             const updateUser = req.body;
-            const filter = { _id: isObjectId(id) };
+            console.log('form update', updateUser)
+            const filter = { _id: ObjectId(id) };
             const options = { upsert: true };
             const updateDoc = {
                 $set: {
                     name: updateUser.name,
-                    email: updateUser.email,
+                    img: updateUser.img,
+                    description: updateUser.description,
+                    price: updateUser.price,
+                    quantity: updateUser.quantity,
                 },
             };
-            const result = await userCollection.updateOne(filter, updateDoc, options);
+            const result = await usersDataCollection.updateOne(filter, updateDoc, options);
             res.send(result);
         })
 
